@@ -22,6 +22,23 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_MAX;
 }
 
+function mailtoFallback(clean: {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}, extra?: Record<string, unknown>) {
+  return NextResponse.json({
+    ok: false,
+    fallbackMailto: true,
+    name: clean.name,
+    email: clean.email,
+    phone: clean.phone,
+    message: clean.message,
+    ...extra,
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") || "";
@@ -56,6 +73,37 @@ export async function POST(request: Request) {
       request.headers.get("referer")?.replace(/\/$/, "") ||
       SITE_ORIGIN;
 
+    // Preferencia: Web3Forms si hay access key (entrega real a Gmail)
+    const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
+    if (web3Key) {
+      const web3Response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: web3Key,
+          subject: `Proyecto ChichanitoSoft — ${clean.name}`,
+          from_name: "ChichanitoSoft Web",
+          name: clean.name,
+          email: clean.email,
+          phone: clean.phone,
+          message: clean.message,
+        }),
+      });
+
+      const web3Result = (await web3Response.json().catch(() => null)) as {
+        success?: boolean;
+        message?: string;
+      } | null;
+
+      if (web3Response.ok && web3Result?.success) {
+        return NextResponse.json({ ok: true, provider: "web3forms" });
+      }
+    }
+
+    // Fallback: FormSubmit
     const response = await fetch(
       `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
       {
@@ -88,35 +136,23 @@ export async function POST(request: Request) {
       result?.success === "true" ||
       String(result?.message || "")
         .toLowerCase()
-        .includes("sent");
+        .includes("successfully");
 
     if (success) {
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({ ok: true, provider: "formsubmit" });
     }
 
     const needsActivation = String(result?.message || "")
       .toLowerCase()
       .includes("activation");
 
-    if (needsActivation) {
-      return NextResponse.json({
-        ok: true,
-        pendingActivation: true,
-      });
-    }
-
-    return NextResponse.json(
-      {
-        ok: false,
-        fallbackMailto: true,
-        name: clean.name,
-        email: clean.email,
-        phone: clean.phone,
-        message: clean.message,
-        error: result?.message || "No se pudo enviar por el proveedor",
-      },
-      { status: 200 },
-    );
+    // Nunca fingir éxito: si no llegó el email, usamos mailto
+    return mailtoFallback(clean, {
+      pendingActivation: needsActivation,
+      error: needsActivation
+        ? "Activa FormSubmit desde el correo enviado a chichanitosoft@gmail.com (revisa spam)."
+        : result?.message || "No se pudo enviar automáticamente",
+    });
   } catch {
     return NextResponse.json({ error: "Error del servidor" }, { status: 500 });
   }

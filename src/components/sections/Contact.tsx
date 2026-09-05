@@ -84,15 +84,27 @@ export function Contact() {
         throw new Error(payload?.error || "No se pudo enviar");
       }
 
-      if (payload?.fallbackMailto && payload.name && payload.email && payload.message) {
-        const subject = encodeURIComponent(
-          `Proyecto ChichanitoSoft — ${payload.name}`,
-        );
-        const body = encodeURIComponent(
-          `Nombre: ${payload.name}\nEmail: ${payload.email}\nCelular: ${payload.phone || ""}\n\n${payload.message}`,
-        );
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      if (payload?.ok) {
+        setStatus("sent");
+        form.reset();
+        window.setTimeout(() => setStatus("idle"), 5000);
+        return;
       }
+
+      // Si el proveedor de email no entregó, abrimos WhatsApp + correo
+      // para que el mensaje sí llegue.
+      const subject = encodeURIComponent(
+        `Proyecto ChichanitoSoft — ${clean.name}`,
+      );
+      const mailBody = encodeURIComponent(
+        `Nombre: ${clean.name}\nEmail: ${clean.email}\nCelular: ${clean.phone}\n\n${clean.message}`,
+      );
+      const waText = encodeURIComponent(
+        `Hola ChichanitoSoft, soy ${clean.name}.\nEmail: ${clean.email}\nCelular: ${clean.phone}\n\n${clean.message}`,
+      );
+
+      window.open(`https://wa.me/59179969931?text=${waText}`, "_blank", "noopener,noreferrer");
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${mailBody}`;
 
       setStatus("sent");
       form.reset();
