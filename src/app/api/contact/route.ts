@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 import { sanitizeContactInput } from "@/lib/sanitize";
 
 const CONTACT_EMAIL = "chichanitosoft@gmail.com";
-const SITE_ORIGIN = "https://chichanitosoft.vercel.app";
 const RATE_WINDOW_MS = 60_000;
 const RATE_MAX = 5;
 
@@ -22,21 +22,92 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_MAX;
 }
 
-function mailtoFallback(clean: {
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+async function sendWithGmail(clean: {
   name: string;
   email: string;
   phone: string;
   message: string;
-}, extra?: Record<string, unknown>) {
-  return NextResponse.json({
-    ok: false,
-    fallbackMailto: true,
-    name: clean.name,
-    email: clean.email,
-    phone: clean.phone,
-    message: clean.message,
-    ...extra,
+}): Promise<boolean> {
+  const user = process.env.GMAIL_USER || CONTACT_EMAIL;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+
+  if (!pass) return false;
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
   });
+
+  const safeName = escapeHtml(clean.name);
+  const safeEmail = escapeHtml(clean.email);
+  const safePhone = escapeHtml(clean.phone);
+  const safeMessage = escapeHtml(clean.message).replaceAll("\n", "<br/>");
+
+  await transporter.sendMail({
+    from: `"ChichanitoSoft Web" <${user}>`,
+    to: CONTACT_EMAIL,
+    replyTo: clean.email,
+    subject: `Proyecto ChichanitoSoft — ${clean.name}`,
+    text: [
+      `Nombre: ${clean.name}`,
+      `Email: ${clean.email}`,
+      `Celular: ${clean.phone}`,
+      "",
+      clean.message,
+    ].join("\n"),
+    html: `
+      <h2>Nuevo contacto desde la web</h2>
+      <p><strong>Nombre:</strong> ${safeName}</p>
+      <p><strong>Email:</strong> ${safeEmail}</p>
+      <p><strong>Celular:</strong> ${safePhone}</p>
+      <p><strong>Mensaje:</strong></p>
+      <p>${safeMessage}</p>
+    `,
+  });
+
+  return true;
+}
+
+async function sendWithWeb3Forms(clean: {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}): Promise<boolean> {
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  if (!accessKey) return false;
+
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      access_key: accessKey,
+      subject: `Proyecto ChichanitoSoft — ${clean.name}`,
+      from_name: "ChichanitoSoft Web",
+      name: clean.name,
+      email: clean.email,
+      phone: clean.phone,
+      message: clean.message,
+    }),
+  });
+
+  const result = (await response.json().catch(() => null)) as {
+    success?: boolean;
+  } | null;
+
+  return Boolean(response.ok && result?.success);
 }
 
 export async function POST(request: Request) {
@@ -68,91 +139,31 @@ export async function POST(request: Request) {
       );
     }
 
-    const origin =
-      request.headers.get("origin") ||
-      request.headers.get("referer")?.replace(/\/$/, "") ||
-      SITE_ORIGIN;
+    // 1) Gmail SMTP (silencioso, sin abrir Outlook)
+    try {
+      if (await sendWithGmail(clean)) {
+        return NextResponse.json({ ok: true, provider: "gmail" });
+      }
+    } catch {
+      // Continúa con el siguiente proveedor
+    }
 
-    // Preferencia: Web3Forms si hay access key (entrega real a Gmail)
-    const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
-    if (web3Key) {
-      const web3Response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: web3Key,
-          subject: `Proyecto ChichanitoSoft — ${clean.name}`,
-          from_name: "ChichanitoSoft Web",
-          name: clean.name,
-          email: clean.email,
-          phone: clean.phone,
-          message: clean.message,
-        }),
-      });
-
-      const web3Result = (await web3Response.json().catch(() => null)) as {
-        success?: boolean;
-        message?: string;
-      } | null;
-
-      if (web3Response.ok && web3Result?.success) {
+    // 2) Web3Forms
+    try {
+      if (await sendWithWeb3Forms(clean)) {
         return NextResponse.json({ ok: true, provider: "web3forms" });
       }
+    } catch {
+      // Continúa
     }
 
-    // Fallback: FormSubmit
-    const response = await fetch(
-      `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
+    return NextResponse.json(
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Origin: origin,
-          Referer: `${origin}/`,
-        },
-        body: JSON.stringify({
-          name: clean.name,
-          email: clean.email,
-          phone: clean.phone,
-          message: clean.message,
-          _subject: `Proyecto ChichanitoSoft — ${clean.name}`,
-          _replyto: clean.email,
-          _template: "table",
-        }),
+        error:
+          "El envío de correo aún no está configurado. Agrega GMAIL_APP_PASSWORD en Vercel.",
       },
+      { status: 503 },
     );
-
-    const result = (await response.json().catch(() => null)) as {
-      success?: string | boolean;
-      message?: string;
-    } | null;
-
-    const success =
-      result?.success === true ||
-      result?.success === "true" ||
-      String(result?.message || "")
-        .toLowerCase()
-        .includes("successfully");
-
-    if (success) {
-      return NextResponse.json({ ok: true, provider: "formsubmit" });
-    }
-
-    const needsActivation = String(result?.message || "")
-      .toLowerCase()
-      .includes("activation");
-
-    // Nunca fingir éxito: si no llegó el email, usamos mailto
-    return mailtoFallback(clean, {
-      pendingActivation: needsActivation,
-      error: needsActivation
-        ? "Activa FormSubmit desde el correo enviado a chichanitosoft@gmail.com (revisa spam)."
-        : result?.message || "No se pudo enviar automáticamente",
-    });
   } catch {
     return NextResponse.json({ error: "Error del servidor" }, { status: 500 });
   }
