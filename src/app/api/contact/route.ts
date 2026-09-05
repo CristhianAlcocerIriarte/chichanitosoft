@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { sanitizeContactInput } from "@/lib/sanitize";
 
-const CONTACT_EMAIL = "chichanitosoft@gmail.com";
 const RATE_WINDOW_MS = 60_000;
-const RATE_MAX = 5;
+const RATE_MAX = 8;
 
 const hits = new Map<string, number[]>();
 
@@ -22,112 +20,7 @@ function isRateLimited(ip: string): boolean {
   return recent.length > RATE_MAX;
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-type SendResult =
-  | { ok: true; provider: string }
-  | { ok: false; reason: "missing" | "auth" | "unknown"; detail?: string };
-
-async function sendWithGmail(clean: {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-}): Promise<SendResult> {
-  const user = process.env.GMAIL_USER || CONTACT_EMAIL;
-  const pass = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
-
-  if (!pass) return { ok: false, reason: "missing" };
-
-  try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: { user, pass },
-    });
-
-    const safeName = escapeHtml(clean.name);
-    const safeEmail = escapeHtml(clean.email);
-    const safePhone = escapeHtml(clean.phone);
-    const safeMessage = escapeHtml(clean.message).replaceAll("\n", "<br/>");
-
-    await transporter.sendMail({
-      from: `"ChichanitoSoft Web" <${user}>`,
-      to: CONTACT_EMAIL,
-      replyTo: clean.email,
-      subject: `Proyecto ChichanitoSoft — ${clean.name}`,
-      text: [
-        `Nombre: ${clean.name}`,
-        `Email: ${clean.email}`,
-        `Celular: ${clean.phone}`,
-        "",
-        clean.message,
-      ].join("\n"),
-      html: `
-        <h2>Nuevo contacto desde la web</h2>
-        <p><strong>Nombre:</strong> ${safeName}</p>
-        <p><strong>Email:</strong> ${safeEmail}</p>
-        <p><strong>Celular:</strong> ${safePhone}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${safeMessage}</p>
-      `,
-    });
-
-    return { ok: true, provider: "gmail" };
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : "Error SMTP";
-    const authFailed = /invalid login|username and password|authentication|eauth/i.test(
-      detail,
-    );
-    return {
-      ok: false,
-      reason: authFailed ? "auth" : "unknown",
-      detail,
-    };
-  }
-}
-
-async function sendWithWeb3Forms(clean: {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-}): Promise<boolean> {
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
-  if (!accessKey) return false;
-
-  const response = await fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({
-      access_key: accessKey,
-      subject: `Proyecto ChichanitoSoft — ${clean.name}`,
-      from_name: "ChichanitoSoft Web",
-      name: clean.name,
-      email: clean.email,
-      phone: clean.phone,
-      message: clean.message,
-    }),
-  });
-
-  const result = (await response.json().catch(() => null)) as {
-    success?: boolean;
-  } | null;
-
-  return Boolean(response.ok && result?.success);
-}
-
+/** Valida y sanitiza. El envío real se hace en el cliente (FormSubmit/Web3Forms). */
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") || "";
@@ -146,7 +39,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     if (typeof body?.company === "string" && body.company.trim() !== "") {
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({ ok: true, honeypot: true });
     }
 
     const clean = sanitizeContactInput(body);
@@ -157,43 +50,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const gmailResult = await sendWithGmail(clean);
-    if (gmailResult.ok) {
-      return NextResponse.json({ ok: true, provider: gmailResult.provider });
-    }
-
-    try {
-      if (await sendWithWeb3Forms(clean)) {
-        return NextResponse.json({ ok: true, provider: "web3forms" });
-      }
-    } catch {
-      // Continúa al error final
-    }
-
-    if (gmailResult.reason === "missing") {
-      return NextResponse.json(
-        {
-          error:
-            "Falta GMAIL_APP_PASSWORD en Vercel. Crea una Contraseña de aplicaciones en Google.",
-        },
-        { status: 503 },
-      );
-    }
-
-    if (gmailResult.reason === "auth") {
-      return NextResponse.json(
-        {
-          error:
-            "Gmail rechazó la clave. Usa una Contraseña de aplicaciones (16 letras), no la contraseña normal de la cuenta.",
-        },
-        { status: 503 },
-      );
-    }
-
-    return NextResponse.json(
-      { error: "No se pudo enviar el correo. Intenta de nuevo." },
-      { status: 502 },
-    );
+    return NextResponse.json({ ok: true, data: clean });
   } catch {
     return NextResponse.json({ error: "Error del servidor" }, { status: 500 });
   }

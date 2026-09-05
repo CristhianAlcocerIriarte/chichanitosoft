@@ -54,7 +54,7 @@ export function Contact() {
     setErrorMsg("");
 
     try {
-      const response = await fetch("/api/contact", {
+      const validateResponse = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,13 +69,105 @@ export function Contact() {
         }),
       });
 
-      const payload = (await response.json().catch(() => null)) as {
+      const validated = (await validateResponse.json().catch(() => null)) as {
         ok?: boolean;
         error?: string;
+        honeypot?: boolean;
+        data?: {
+          name: string;
+          email: string;
+          phone: string;
+          message: string;
+        };
       } | null;
 
-      if (!response.ok || !payload?.ok) {
-        throw new Error(payload?.error || "No se pudo enviar");
+      if (!validateResponse.ok || !validated?.ok) {
+        throw new Error(validated?.error || "No se pudo validar el formulario");
+      }
+
+      if (validated.honeypot) {
+        setStatus("sent");
+        form.reset();
+        window.setTimeout(() => setStatus("idle"), 5000);
+        return;
+      }
+
+      const payload = validated.data || clean;
+      const web3Key = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+
+      if (web3Key) {
+        const web3Response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_key: web3Key,
+            subject: `Proyecto ChichanitoSoft — ${payload.name}`,
+            from_name: "ChichanitoSoft Web",
+            name: payload.name,
+            email: payload.email,
+            phone: payload.phone,
+            message: payload.message,
+            botcheck: false,
+          }),
+        });
+
+        const web3Result = (await web3Response.json().catch(() => null)) as {
+          success?: boolean;
+          message?: string;
+        } | null;
+
+        if (!web3Response.ok || !web3Result?.success) {
+          throw new Error(web3Result?.message || "No se pudo enviar el mensaje");
+        }
+      } else {
+        // Envío silencioso a Gmail vía FormSubmit (desde el navegador)
+        const submitResponse = await fetch(
+          `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              name: payload.name,
+              email: payload.email,
+              phone: payload.phone,
+              message: payload.message,
+              _subject: `Proyecto ChichanitoSoft — ${payload.name}`,
+              _template: "table",
+              _replyto: payload.email,
+            }),
+          },
+        );
+
+        const submitResult = (await submitResponse.json().catch(() => null)) as {
+          success?: string | boolean;
+          message?: string;
+        } | null;
+
+        const success =
+          submitResult?.success === true ||
+          submitResult?.success === "true";
+
+        if (!success) {
+          const needsActivation = String(submitResult?.message || "")
+            .toLowerCase()
+            .includes("activation");
+
+          if (needsActivation) {
+            throw new Error(
+              "Activa el formulario: revisa el Gmail de chichanitosoft@gmail.com (también spam) y haz clic en Activate Form.",
+            );
+          }
+
+          throw new Error(
+            submitResult?.message || "No se pudo enviar el mensaje",
+          );
+        }
       }
 
       setStatus("sent");
@@ -86,7 +178,7 @@ export function Contact() {
         err instanceof Error ? err.message : "No se pudo enviar. Intenta de nuevo.",
       );
       setStatus("error");
-      window.setTimeout(() => setStatus("idle"), 5000);
+      window.setTimeout(() => setStatus("idle"), 8000);
     }
   }
 
