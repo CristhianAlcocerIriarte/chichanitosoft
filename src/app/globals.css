@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #000000;
+  --ink-soft: #1a1a1a;
+  --mist: #eef8f6;
+  --paper: #ffffff;
+  --line: rgba(15, 157, 138, 0.18);
+  --signal: #0f9d8a;
+  --signal-deep: #0a7a6b;
+  --ember: #0a7a6b;
+  --muted: #4a5c58;
+  --surface: rgba(255, 255, 255, 0.7);
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+  --color-line: var(--line);
+  --color-signal: var(--signal);
+  --color-signal-deep: var(--signal-deep);
+  --color-ember: var(--ember);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--signal) 35%, white);
+  color: var(--ink);
+}
+
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.mesh-hero {
+  background:
+    radial-gradient(120% 80% at 12% 18%, rgba(15, 157, 138, 0.38), transparent 55%),
+    radial-gradient(90% 70% at 88% 12%, rgba(15, 157, 138, 0.22), transparent 50%),
+    radial-gradient(70% 60% at 70% 85%, rgba(15, 157, 138, 0.14), transparent 55%),
+    linear-gradient(165deg, #e8f7f4 0%, #ffffff 42%, #f0faf8 100%);
+  background-size: 120% 120%;
+  animation: mesh-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-drift {
+  0% {
+    background-position: 0% 40%;
+  }
+  100% {
+    background-position: 80% 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-hero,
+  .animate-float-slow,
+  .animate-dash,
+  .animate-pulse-line {
+    animation: none !important;
+  }
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(15, 157, 138, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 157, 138, 0.08) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.clip-reveal {
+  clip-path: inset(0 100% 0 0);
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+@keyframes pulse-line {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+.animate-dash {
+  stroke-dasharray: 8 12;
+  animation: dash-flow 18s linear infinite;
+}
+
+.animate-pulse-line {
+  animation: pulse-line 3.5s ease-in-out infinite;
+}
+
+input,
+textarea {
+  font: inherit;
+}
+
+input:focus,
+textarea:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--signal) 70%, white);
+  outline-offset: 3px;
+}
