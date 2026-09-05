@@ -69,6 +69,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           name: clean.name,
           email: clean.email,
+          phone: clean.phone,
           message: clean.message,
           _subject: `Proyecto ChichanitoSoft — ${clean.name}`,
           _replyto: clean.email,
@@ -98,21 +99,19 @@ export async function POST(request: Request) {
       .includes("activation");
 
     if (needsActivation) {
-      // Primera vez: FormSubmit pide activar el correo destino.
-      // Devolvemos ok para no romper UX; el usuario debe confirmar el email.
       return NextResponse.json({
         ok: true,
         pendingActivation: true,
       });
     }
 
-    // Fallback controlado: el cliente abre mailto con datos ya sanitizados
     return NextResponse.json(
       {
         ok: false,
         fallbackMailto: true,
         name: clean.name,
         email: clean.email,
+        phone: clean.phone,
         message: clean.message,
         error: result?.message || "No se pudo enviar por el proveedor",
       },

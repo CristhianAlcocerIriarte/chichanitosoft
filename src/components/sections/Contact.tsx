@@ -39,6 +39,7 @@ export function Contact() {
     const clean = sanitizeContactInput({
       name: data.get("name"),
       email: data.get("email"),
+      phone: data.get("phone"),
       message: data.get("message"),
     });
 
@@ -62,6 +63,7 @@ export function Contact() {
         body: JSON.stringify({
           name: clean.name,
           email: clean.email,
+          phone: clean.phone,
           message: clean.message,
           company: "",
         }),
@@ -73,6 +75,7 @@ export function Contact() {
         fallbackMailto?: boolean;
         name?: string;
         email?: string;
+        phone?: string;
         message?: string;
         pendingActivation?: boolean;
       } | null;
@@ -86,7 +89,7 @@ export function Contact() {
           `Proyecto ChichanitoSoft — ${payload.name}`,
         );
         const body = encodeURIComponent(
-          `Nombre: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`,
+          `Nombre: ${payload.name}\nEmail: ${payload.email}\nCelular: ${payload.phone || ""}\n\n${payload.message}`,
         );
         window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
       }
@@ -145,9 +148,18 @@ export function Contact() {
             </motion.div>
             <div>
               <dt className="text-[0.65rem] uppercase tracking-[0.22em] text-muted">
-                Disponibilidad
+                Celular
               </dt>
-              <dd className="mt-1 text-ink">Nuevos proyectos</dd>
+              <dd className="mt-1">
+                <a
+                  href="https://wa.me/59179969931"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink transition-colors hover:text-signal"
+                >
+                  +591 79969931
+                </a>
+              </dd>
             </div>
           </dl>
         </Reveal>
@@ -224,6 +236,27 @@ export function Contact() {
                   className={fieldClass}
                   placeholder="tu@empresa.com"
                   onFocus={() => setFocused("email")}
+                  onBlur={() => setFocused(null)}
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span
+                  className={`font-mono text-[0.65rem] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                    focused === "phone" ? "text-signal" : "text-muted"
+                  }`}
+                >
+                  Celular
+                </span>
+                <input
+                  required
+                  type="tel"
+                  name="phone"
+                  autoComplete="tel"
+                  maxLength={CONTACT_LIMITS.phone}
+                  inputMode="tel"
+                  className={fieldClass}
+                  placeholder="+591 70000000"
+                  onFocus={() => setFocused("phone")}
                   onBlur={() => setFocused(null)}
                 />
               </label>
