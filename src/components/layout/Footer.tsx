@@ -19,7 +19,7 @@ export function Footer() {
               Chichanito<span className="text-signal">Soft</span>
             </ScrollToHero>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-paper/60">
-              Desarrollo de software a medida con frontend de alto impacto y
+              Desarrollo de software a medida con frontend de alto impacto e
               ingeniería confiable.
             </p>
           </div>
