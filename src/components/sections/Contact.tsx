@@ -67,11 +67,28 @@ export function Contact() {
         }),
       });
 
+      const payload = (await response.json().catch(() => null)) as {
+        ok?: boolean;
+        error?: string;
+        fallbackMailto?: boolean;
+        name?: string;
+        email?: string;
+        message?: string;
+        pendingActivation?: boolean;
+      } | null;
+
       if (!response.ok) {
-        const payload = (await response.json().catch(() => null)) as {
-          error?: string;
-        } | null;
         throw new Error(payload?.error || "No se pudo enviar");
+      }
+
+      if (payload?.fallbackMailto && payload.name && payload.email && payload.message) {
+        const subject = encodeURIComponent(
+          `Proyecto ChichanitoSoft — ${payload.name}`,
+        );
+        const body = encodeURIComponent(
+          `Nombre: ${payload.name}\nEmail: ${payload.email}\n\n${payload.message}`,
+        );
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
       }
 
       setStatus("sent");
