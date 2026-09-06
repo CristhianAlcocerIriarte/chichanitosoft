@@ -67,8 +67,7 @@ export function Services() {
           {services.map((service, index) => (
             <Reveal key={service.code} delay={index * 0.08} y={24}>
               <li className="group relative">
-                <motion.a
-                  href="#contacto"
+                <motion.div
                   className="relative grid gap-4 overflow-hidden py-8 sm:grid-cols-[5rem_1fr_1.2fr_auto] sm:items-baseline sm:gap-8 sm:py-10"
                   whileHover={reduce ? undefined : { x: 8 }}
                   transition={{ type: "spring", stiffness: 280, damping: 24 }}
@@ -99,7 +98,7 @@ export function Services() {
                     aria-hidden
                     className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-signal transition-transform duration-500 group-hover:scale-x-100"
                   />
-                </motion.a>
+                </motion.div>
               </li>
             </Reveal>
           ))}

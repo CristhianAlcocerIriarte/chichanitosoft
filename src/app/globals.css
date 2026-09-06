@@ -84,7 +84,9 @@ body {
   .mesh-hero,
   .animate-float-slow,
   .animate-dash,
-  .animate-pulse-line {
+  .animate-pulse-line,
+  .animate-button-shine,
+  .animate-cta-glow {
     animation: none !important;
   }
 }
@@ -150,6 +152,34 @@ body {
 
 .animate-pulse-line {
   animation: pulse-line 3.5s ease-in-out infinite;
+}
+
+@keyframes button-shine {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(230%) skewX(-18deg);
+  }
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(15, 157, 138, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(15, 157, 138, 0);
+  }
+}
+
+.animate-button-shine {
+  animation: button-shine 2.6s ease-in-out infinite;
+}
+
+.animate-cta-glow {
+  animation: cta-glow 2.6s ease-in-out infinite;
 }
 
 input,

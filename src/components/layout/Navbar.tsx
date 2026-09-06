@@ -73,7 +73,7 @@ export function Navbar() {
           href="#contacto"
           className="group relative inline-flex items-center overflow-hidden bg-signal px-4 py-2.5 text-sm font-medium text-white"
         >
-          <span className="relative z-10">Reserva una visita gratis</span>
+          <span className="relative z-10">Agenda una visita gratis</span>
           <span
             aria-hidden
             className="absolute inset-0 origin-left scale-x-0 bg-signal-deep transition-transform duration-400 group-hover:scale-x-100"

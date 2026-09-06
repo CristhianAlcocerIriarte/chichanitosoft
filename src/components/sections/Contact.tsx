@@ -249,7 +249,7 @@ export function Contact() {
             onSubmit={onSubmit}
             noValidate
             autoComplete="on"
-            className="relative border border-signal/20 bg-signal/[0.03] p-6 backdrop-blur-sm sm:p-8"
+            className="relative border border-signal/20 bg-white p-6 sm:p-8"
             whileHover={reduce ? undefined : { y: -2 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
           >
