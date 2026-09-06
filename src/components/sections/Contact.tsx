@@ -183,7 +183,11 @@ export function Contact() {
   }
 
   return (
-    <section id="contacto" className="relative overflow-hidden bg-paper py-24 sm:py-32">
+    <section id="contacto" className="relative overflow-hidden border-t border-signal/25 bg-mist py-24 sm:py-32">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal to-transparent"
+      />
       <div
         aria-hidden
         className="pointer-events-none absolute -left-16 bottom-10 h-72 w-72 rounded-full bg-signal/10 blur-3xl"

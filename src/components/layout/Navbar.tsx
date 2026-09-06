@@ -7,6 +7,7 @@ import { ScrollToHero } from "@/components/ui/ScrollToHero";
 
 const links = [
   { href: "#servicios", label: "Servicios" },
+  { href: "#planes", label: "Planes" },
   { href: "#enfoque", label: "Enfoque" },
   { href: "#contacto", label: "Contacto" },
 ];

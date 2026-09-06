@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
 import { Approach } from "@/components/sections/Approach";
+import { Plans } from "@/components/sections/Plans";
 import { Contact } from "@/components/sections/Contact";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
@@ -15,6 +16,7 @@ export default function Home() {
         <Hero />
         <Services />
         <Approach />
+        <Plans />
         <Contact />
       </main>
       <Footer />
