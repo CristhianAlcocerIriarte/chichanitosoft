@@ -36,7 +36,7 @@ export function Services() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="servicios" className="relative overflow-hidden bg-paper py-24 sm:py-32">
+    <section id="servicios" className="relative overflow-hidden border-y border-signal/15 bg-mist py-14 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal/50 to-transparent"
@@ -56,25 +56,25 @@ export function Services() {
             className="font-display mt-4 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
             delay={0.08}
           />
-          <DrawLine className="mt-6 max-w-[7rem]" />
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+          <DrawLine className="mt-4 max-w-[7rem]" />
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             Construimos software que se siente premium: rápido, claro y
             memorable desde el primer scroll.
           </p>
         </Reveal>
 
-        <ul className="mt-16 divide-y divide-line border-y border-line">
+        <ul className="mt-8 divide-y divide-line border-y border-line">
           {services.map((service, index) => (
             <Reveal key={service.code} delay={index * 0.08} y={24}>
               <li className="group relative">
                 <motion.div
-                  className="relative grid gap-4 overflow-hidden py-8 sm:grid-cols-[5rem_1fr_1.2fr_auto] sm:items-baseline sm:gap-8 sm:py-10"
+                  className="relative grid gap-4 overflow-hidden py-6 sm:grid-cols-[5rem_1fr_1.2fr_auto] sm:items-baseline sm:gap-8 sm:py-7"
                   whileHover={reduce ? undefined : { x: 8 }}
                   transition={{ type: "spring", stiffness: 280, damping: 24 }}
                 >
                   <motion.span
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 -z-10 bg-signal/[0.07] opacity-0 transition-opacity duration-400 group-hover:opacity-100"
+                    className="pointer-events-none absolute inset-0 -z-10 bg-white opacity-0 transition-opacity duration-400 group-hover:opacity-100"
                   />
                   <motion.span
                     className="font-mono text-sm font-medium text-signal"

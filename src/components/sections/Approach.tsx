@@ -30,7 +30,7 @@ export function Approach() {
   return (
     <section
       id="enfoque"
-      className="relative overflow-hidden border-y border-signal/20 bg-mist py-24 sm:py-32"
+      className="relative overflow-hidden border-y border-signal/10 bg-paper py-12 sm:py-16"
     >
       <motion.div
         aria-hidden
@@ -53,13 +53,13 @@ export function Approach() {
           <TextReveal
             as="h2"
             text="Del brief a producción sin fricción"
-            className="font-display mt-4 max-w-xl text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
+            className="font-display mt-3 max-w-xl text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
             delay={0.08}
           />
-          <DrawLine className="mt-6 max-w-[7rem]" />
+          <DrawLine className="mt-3 max-w-[7rem]" />
         </Reveal>
 
-        <ol className="mt-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <ol className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
           {steps.map((step, index) => (
             <Reveal key={step.title} delay={index * 0.1} y={32} blur>
               <motion.li
@@ -68,7 +68,7 @@ export function Approach() {
                 transition={{ type: "spring", stiffness: 260, damping: 22 }}
               >
                 <motion.span
-                  className="font-display inline-block text-5xl font-bold leading-none tracking-tighter text-signal/25 transition-colors duration-300 group-hover:text-signal/45"
+                  className="font-display inline-block text-4xl font-bold leading-none tracking-tighter text-signal/25 transition-colors duration-300 group-hover:text-signal/45 sm:text-5xl"
                   initial={reduce ? false : { opacity: 0, scale: 0.85 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
@@ -80,10 +80,10 @@ export function Approach() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </motion.span>
-                <h3 className="font-display mt-4 text-xl font-semibold text-ink transition-colors duration-300 group-hover:text-signal-deep">
+                <h3 className="font-display mt-2 text-xl font-semibold text-ink transition-colors duration-300 group-hover:text-signal-deep">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted sm:text-[0.95rem]">
+                <p className="mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem]">
                   {step.text}
                 </p>
                 {index < steps.length - 1 && (

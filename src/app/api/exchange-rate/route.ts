@@ -44,7 +44,7 @@ async function fetchFromBcbOfficial(): Promise<ExchangePayload | null> {
   return {
     rate,
     currency: "USD/BOB",
-    source: "Banco Central de Bolivia — Tipo de Cambio Oficial (TCO)",
+    source: "Banco Central de Bolivia: Tipo de Cambio Oficial (TCO)",
     sourceUrl: "https://www.bcb.gob.bo/librerias/indicadores/otras/ultimo.php",
     date: dateMatch?.[1] ?? null,
     fetchedAt: new Date().toISOString(),
@@ -81,7 +81,7 @@ async function fetchFromBcbMirror(): Promise<ExchangePayload | null> {
     currency: "USD/BOB",
     source:
       data.tc_oficial?.fuente ||
-      "Banco Central de Bolivia — Tipo de Cambio Oficial (TCO)",
+      "Banco Central de Bolivia: Tipo de Cambio Oficial (TCO)",
     sourceUrl: "https://www.bcb.gob.bo/",
     date: data.tc_oficial?.fecha ?? null,
     fetchedAt: new Date().toISOString(),

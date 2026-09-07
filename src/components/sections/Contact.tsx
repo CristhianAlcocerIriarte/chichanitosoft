@@ -104,7 +104,7 @@ export function Contact() {
           },
           body: JSON.stringify({
             access_key: web3Key,
-            subject: `Proyecto ChichanitoSoft — ${payload.name}`,
+            subject: `Proyecto ChichanitoSoft: ${payload.name}`,
             from_name: "ChichanitoSoft Web",
             name: payload.name,
             email: payload.email,
@@ -137,7 +137,7 @@ export function Contact() {
               email: payload.email,
               phone: payload.phone,
               message: payload.message,
-              _subject: `Proyecto ChichanitoSoft — ${payload.name}`,
+              _subject: `Proyecto ChichanitoSoft: ${payload.name}`,
               _template: "table",
               _replyto: payload.email,
             }),
@@ -183,16 +183,16 @@ export function Contact() {
   }
 
   return (
-    <section id="contacto" className="relative overflow-hidden border-t border-signal/25 bg-mist py-24 sm:py-32">
+    <section id="contacto" className="relative overflow-hidden border-t border-signal/20 bg-paper py-14 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal to-transparent"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-16 bottom-10 h-72 w-72 rounded-full bg-signal/10 blur-3xl"
+        className="pointer-events-none absolute -left-16 bottom-10 h-72 w-72 rounded-full bg-signal/8 blur-3xl"
       />
-      <div className="mx-auto grid max-w-6xl gap-14 px-5 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
         <Reveal blur>
           <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep">
             Contacto
@@ -203,8 +203,8 @@ export function Contact() {
             className="font-display mt-4 text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
             delay={0.08}
           />
-          <DrawLine className="mt-6 max-w-[7rem]" />
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg">
+          <DrawLine className="mt-4 max-w-[7rem]" />
+          <p className="mt-4 max-w-md text-base leading-relaxed text-muted sm:text-lg">
             Reserva una visita gratis. Respondemos con claridad: alcance,
             tiempos y el enfoque técnico que tu producto necesita.
           </p>

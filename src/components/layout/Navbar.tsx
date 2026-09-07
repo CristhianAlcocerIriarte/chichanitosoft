@@ -6,6 +6,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollToHero } from "@/components/ui/ScrollToHero";
 
 const links = [
+  { href: "#beneficios", label: "Beneficios" },
   { href: "#servicios", label: "Servicios" },
   { href: "#planes", label: "Planes" },
   { href: "#enfoque", label: "Enfoque" },

@@ -234,14 +234,10 @@ export function Plans() {
   }
 
   return (
-    <section id="planes" className="relative overflow-hidden border-b border-signal/20 bg-paper py-24 sm:py-32">
+    <section id="planes" className="relative overflow-hidden border-y border-signal/15 bg-mist py-14 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal/50 to-transparent"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-signal/60 to-transparent"
       />
       <div
         aria-hidden
@@ -259,14 +255,14 @@ export function Plans() {
             className="font-display mt-4 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
             delay={0.08}
           />
-          <DrawLine className="mt-6 max-w-[7rem]" />
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+          <DrawLine className="mt-4 max-w-[7rem]" />
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             Hosting incluido, diseño profesional y acompañamiento técnico.
             Reserva una visita gratis y te orientamos al plan correcto.
           </p>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10">
+        <Reveal delay={0.1} className="mt-8">
           <div
             role="group"
             aria-label="Seleccionar moneda"
@@ -295,7 +291,7 @@ export function Plans() {
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-3 lg:items-start lg:gap-5">
+        <div className="mt-8 grid gap-6 lg:grid-cols-3 lg:items-start lg:gap-5">
           {plans.map((plan, index) => {
             const isOpen = openPlan === plan.id;
 
