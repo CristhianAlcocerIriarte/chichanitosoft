@@ -6,13 +6,19 @@ import type { MouseEvent, ReactNode } from "react";
 type ScrollToHeroProps = {
   children: ReactNode;
   className?: string;
+  onNavigate?: () => void;
 };
 
-export function ScrollToHero({ children, className }: ScrollToHeroProps) {
+export function ScrollToHero({
+  children,
+  className,
+  onNavigate,
+}: ScrollToHeroProps) {
   const lenis = useLenis();
 
   function onClick(e: MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
+    onNavigate?.();
 
     const target = document.getElementById("inicio");
     window.history.pushState(null, "", "/");
