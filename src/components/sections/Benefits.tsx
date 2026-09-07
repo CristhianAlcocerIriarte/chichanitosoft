@@ -71,7 +71,7 @@ export function Benefits() {
               <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal">
                 Beneficios
               </p>
-              <h2 className="font-display mt-4 max-w-sm text-4xl font-bold tracking-[-0.03em] text-balance sm:text-5xl">
+              <h2 className="font-display mt-2 max-w-sm text-4xl font-bold tracking-[-0.03em] text-balance sm:text-5xl">
                 Por qué te conviene un sistema web
               </h2>
               <p className="mt-4 max-w-sm text-base leading-relaxed text-white/65 sm:text-lg">

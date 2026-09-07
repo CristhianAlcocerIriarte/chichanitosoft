@@ -200,7 +200,7 @@ export function Contact() {
           <TextReveal
             as="h2"
             text="Cuéntanos qué quieres construir"
-            className="font-display mt-4 text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
+            className="font-display mt-2 text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
             delay={0.08}
           />
           <DrawLine className="mt-4 max-w-[7rem]" />

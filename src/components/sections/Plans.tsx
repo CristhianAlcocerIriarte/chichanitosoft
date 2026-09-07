@@ -252,7 +252,7 @@ export function Plans() {
           <TextReveal
             as="h2"
             text="Elige el plan que impulsa tu negocio"
-            className="font-display mt-4 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
+            className="font-display mt-2 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
             delay={0.08}
           />
           <DrawLine className="mt-4 max-w-[7rem]" />

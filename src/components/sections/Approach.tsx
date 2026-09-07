@@ -53,7 +53,7 @@ export function Approach() {
           <TextReveal
             as="h2"
             text="Del brief a producción sin fricción"
-            className="font-display mt-3 max-w-xl text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
+            className="font-display mt-2 max-w-xl text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
             delay={0.08}
           />
           <DrawLine className="mt-3 max-w-[7rem]" />
