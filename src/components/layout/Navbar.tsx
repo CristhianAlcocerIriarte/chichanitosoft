@@ -7,15 +7,17 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useLenis } from "lenis/react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { ScrollToHero } from "@/components/ui/ScrollToHero";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 const links = [
   { href: "#beneficios", label: "Beneficios" },
+  { href: "#enfoque", label: "Enfoque" },
   { href: "#servicios", label: "Servicios" },
   { href: "#planes", label: "Planes" },
-  { href: "#enfoque", label: "Enfoque" },
   { href: "#contacto", label: "Contacto" },
 ];
 
@@ -24,6 +26,7 @@ export function Navbar() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const lenis = useLenis();
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (v) => {
@@ -39,6 +42,25 @@ export function Navbar() {
 
   function closeMenu() {
     setOpen(false);
+  }
+
+  function onNavClick(e: MouseEvent<HTMLElement>, href: string) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const wasOpen = open;
+    document.body.style.overflow = "";
+    setOpen(false);
+
+    const go = () => scrollToSection(href, lenis);
+
+    if (wasOpen) {
+      // Wait until the mobile panel closes and body scroll unlocks
+      window.setTimeout(go, 160);
+      return;
+    }
+
+    requestAnimationFrame(go);
   }
 
   return (
@@ -77,6 +99,7 @@ export function Navbar() {
               transition={{ delay: 0.25 + index * 0.06, duration: 0.5 }}
               onMouseEnter={() => setHovered(link.href)}
               onMouseLeave={() => setHovered(null)}
+              onClick={(e) => onNavClick(e, link.href)}
               className="relative text-sm font-medium text-muted transition-colors duration-300 hover:text-ink"
             >
               {link.label}
@@ -96,6 +119,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <MagneticButton
             href="#contacto"
+            onClick={(e) => onNavClick(e, "#contacto")}
             className="group relative hidden items-center overflow-hidden bg-signal px-4 py-2.5 text-sm font-medium text-white md:inline-flex"
           >
             <span className="relative z-10">Agenda una visita gratis</span>
@@ -169,7 +193,7 @@ export function Navbar() {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        onClick={closeMenu}
+                        onClick={(e) => onNavClick(e, link.href)}
                         className="flex items-center justify-between border-b border-line py-3.5 text-base font-semibold text-ink"
                       >
                         <span className="font-display tracking-tight">
@@ -185,7 +209,7 @@ export function Navbar() {
 
                 <a
                   href="#contacto"
-                  onClick={closeMenu}
+                  onClick={(e) => onNavClick(e, "#contacto")}
                   className="mt-4 inline-flex items-center justify-center bg-signal px-5 py-3 text-sm font-semibold text-white"
                 >
                   Agenda una visita gratis

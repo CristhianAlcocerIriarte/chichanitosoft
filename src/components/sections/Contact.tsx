@@ -3,8 +3,7 @@
 import { FormEvent, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { DrawLine } from "@/components/ui/DrawLine";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { CONTACT_LIMITS, sanitizeContactInput } from "@/lib/sanitize";
 
@@ -194,20 +193,18 @@ export function Contact() {
       />
       <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
         <Reveal blur>
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep">
-            Contacto
-          </p>
-          <TextReveal
-            as="h2"
-            text="Cuéntanos qué quieres construir"
-            className="font-display mt-2 text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
-            delay={0.08}
-          />
-          <DrawLine className="mt-4 max-w-[7rem]" />
-          <p className="mt-4 max-w-md text-base leading-relaxed text-muted sm:text-lg">
-            Reserva una visita gratis. Respondemos con claridad: alcance,
-            tiempos y el enfoque técnico que tu producto necesita.
-          </p>
+          <SectionHeader
+            label="Contacto"
+            title="Cuéntanos qué quieres construir"
+          >
+            <p className="max-w-md text-base leading-relaxed text-muted sm:text-lg">
+              Agenda una visita.{" "}
+              <span className="font-medium text-signal-deep">
+                Respuesta clara.
+              </span>{" "}
+              Alcance, tiempos y siguiente paso.
+            </p>
+          </SectionHeader>
 
           <dl className="mt-10 space-y-5 font-mono text-sm">
             <motion.div

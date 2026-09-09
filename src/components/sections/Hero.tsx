@@ -16,8 +16,9 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const titleLines = [
-  { text: "Chichanito", className: "text-ink" },
-  { text: "Soft", className: "text-signal" },
+  { text: "Sistemas web a medida,", className: "text-ink" },
+  { text: "diseñados para escalar", className: "text-ink" },
+  { text: "tu negocio sin límites.", className: "text-signal" },
 ];
 
 export function Hero() {
@@ -77,41 +78,22 @@ export function Hero() {
 
       <motion.div
         style={reduce ? undefined : { y, opacity }}
-        className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-16 pt-28 sm:px-8 sm:pb-20 lg:justify-center lg:pb-24 lg:pt-32"
+        className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-10 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:pb-20 lg:pt-28"
       >
         <div className="max-w-4xl">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08, ease }}
-            className="flex items-center gap-3"
-          >
-            <motion.span
-              aria-hidden
-              className="h-px w-8 bg-signal"
-              initial={reduce ? false : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.7, delay: 0.2, ease }}
-              style={{ transformOrigin: "left" }}
-            />
-            <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep sm:text-xs">
-              Impacto e ingeniería
-            </p>
-          </motion.div>
-
-          <p className="font-display mt-5 text-[clamp(2.75rem,11vw,6.75rem)] font-bold leading-[0.92] tracking-[-0.04em]">
+          <h1 className="font-display mt-3 text-[clamp(1.7rem,7.5vw,4.5rem)] font-bold leading-[1.08] tracking-[-0.04em] text-balance sm:mt-4">
             {titleLines.map((line, lineIndex) => (
               <span
                 key={line.text}
-                className={`block overflow-hidden ${line.className}`}
+                className={`block overflow-hidden pb-[0.08em] sm:pb-[0.1em] ${line.className}`}
               >
                 <motion.span
                   className="block"
-                  initial={reduce ? false : { y: "115%", rotate: 2 }}
+                  initial={reduce ? false : { y: "115%", rotate: 1.5 }}
                   animate={{ y: "0%", rotate: 0 }}
                   transition={{
                     duration: 0.95,
-                    delay: 0.22 + lineIndex * 0.12,
+                    delay: 0.22 + lineIndex * 0.1,
                     ease,
                   }}
                 >
@@ -119,20 +101,11 @@ export function Hero() {
                 </motion.span>
               </span>
             ))}
-          </p>
-
-          <motion.h1
-            initial={reduce ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.48, ease }}
-            className="font-display mt-6 max-w-2xl text-[clamp(1.5rem,3.5vw,2.35rem)] font-semibold leading-tight tracking-[-0.02em] text-ink"
-          >
-            Software a medida que convierte
-          </motion.h1>
+          </h1>
 
           <motion.span
             aria-hidden
-            className="mt-6 block h-px max-w-[12rem] origin-left bg-ink/15"
+            className="mt-4 block h-px max-w-[10rem] origin-left bg-ink/15 sm:mt-5 sm:max-w-[12rem]"
             initial={reduce ? false : { scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.9, delay: 0.55, ease }}
@@ -142,21 +115,21 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.62, ease }}
-            className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft/80 sm:text-xl"
+            className="mt-4 max-w-2xl text-[0.95rem] leading-relaxed text-ink-soft/80 sm:mt-5 sm:text-lg"
           >
-            Diseñamos e implementamos productos digitales precisos: interfaces
-            memorables, backends sólidos y experiencia que convierte.
+            Desarrollo web de precisión: arquitectura sólida, rendimiento óptimo
+            y validación rigurosa en cada despliegue.
           </motion.p>
 
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.7, ease }}
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-3"
           >
             <a
               href="#contacto"
-              className="group relative inline-flex items-center justify-center overflow-hidden bg-signal px-6 py-3.5 text-sm font-semibold text-white animate-cta-glow"
+              className="group relative inline-flex items-center justify-center overflow-hidden bg-signal px-5 py-3 text-sm font-semibold text-white animate-cta-glow sm:px-6 sm:py-3.5"
             >
               <span
                 aria-hidden
@@ -174,7 +147,7 @@ export function Hero() {
             </a>
             <MagneticButton
               href="#planes"
-              className="group inline-flex items-center justify-center gap-2 border border-signal/30 bg-white/50 px-6 py-3.5 text-sm font-semibold text-ink backdrop-blur-sm transition-colors duration-300 hover:border-signal hover:bg-signal/10"
+              className="group inline-flex items-center justify-center gap-2 border border-signal/30 bg-white/50 px-5 py-3 text-sm font-semibold text-ink backdrop-blur-sm transition-colors duration-300 hover:border-signal hover:bg-signal/10 sm:px-6 sm:py-3.5"
             >
               Ver planes
               <span

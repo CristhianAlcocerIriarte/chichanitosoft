@@ -2,8 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { DrawLine } from "@/components/ui/DrawLine";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const steps = [
   {
@@ -30,7 +29,7 @@ export function Approach() {
   return (
     <section
       id="enfoque"
-      className="relative overflow-hidden border-y border-signal/10 bg-paper py-12 sm:py-16"
+      className="relative overflow-hidden border-y border-signal/10 bg-mist py-12 sm:py-16"
     >
       <motion.div
         aria-hidden
@@ -47,16 +46,18 @@ export function Approach() {
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal blur>
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep">
-            Enfoque
-          </p>
-          <TextReveal
-            as="h2"
-            text="Del brief a producción sin fricción"
-            className="font-display mt-2 max-w-xl text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl"
-            delay={0.08}
-          />
-          <DrawLine className="mt-3 max-w-[7rem]" />
+          <SectionHeader
+            label="Enfoque"
+            title="De la idea al lanzamiento, con método"
+          >
+            <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              Método claro.{" "}
+              <span className="font-medium text-signal-deep">
+                Entrega confiable.
+              </span>{" "}
+              Sin rodeos ni sorpresas en el camino.
+            </p>
+          </SectionHeader>
         </Reveal>
 
         <ol className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">

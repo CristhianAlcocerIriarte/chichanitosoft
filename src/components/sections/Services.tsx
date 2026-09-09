@@ -2,8 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { DrawLine } from "@/components/ui/DrawLine";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const services = [
   {
@@ -36,7 +35,7 @@ export function Services() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="servicios" className="relative overflow-hidden border-y border-signal/15 bg-mist py-14 sm:py-20">
+    <section id="servicios" className="relative overflow-hidden border-y border-signal/15 bg-paper py-14 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal/50 to-transparent"
@@ -47,20 +46,18 @@ export function Services() {
       />
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal blur>
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep">
-            Servicios
-          </p>
-          <TextReveal
-            as="h2"
-            text="Ingeniería digital con intención estética"
-            className="font-display mt-2 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
-            delay={0.08}
-          />
-          <DrawLine className="mt-4 max-w-[7rem]" />
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            Construimos software que se siente premium: rápido, claro y
-            memorable desde el primer scroll.
-          </p>
+          <SectionHeader
+            label="Servicios"
+            title="Ingeniería digital con intención estética"
+          >
+            <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              Software a medida.{" "}
+              <span className="font-medium text-signal-deep">
+                Resultados reales.
+              </span>{" "}
+              Desde la interfaz hasta el backend.
+            </p>
+          </SectionHeader>
         </Reveal>
 
         <ul className="mt-8 divide-y divide-line border-y border-line">
@@ -74,7 +71,7 @@ export function Services() {
                 >
                   <motion.span
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 -z-10 bg-white opacity-0 transition-opacity duration-400 group-hover:opacity-100"
+                    className="pointer-events-none absolute inset-0 -z-10 bg-mist opacity-0 transition-opacity duration-400 group-hover:opacity-100"
                   />
                   <motion.span
                     className="font-mono text-sm font-medium text-signal"

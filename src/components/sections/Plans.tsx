@@ -7,8 +7,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { Reveal } from "@/components/ui/Reveal";
-import { TextReveal } from "@/components/ui/TextReveal";
-import { DrawLine } from "@/components/ui/DrawLine";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 type Currency = "USD" | "BOB";
 
 type ExchangeRate = {
@@ -246,20 +245,18 @@ export function Plans() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal blur>
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.28em] text-signal-deep">
-            Planes
-          </p>
-          <TextReveal
-            as="h2"
-            text="Elige el plan que impulsa tu negocio"
-            className="font-display mt-2 max-w-2xl text-4xl font-bold tracking-[-0.03em] text-ink text-balance sm:text-5xl"
-            delay={0.08}
-          />
-          <DrawLine className="mt-4 max-w-[7rem]" />
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            Hosting incluido, diseño profesional y acompañamiento técnico.
-            Reserva una visita gratis y te orientamos al plan correcto.
-          </p>
+          <SectionHeader
+            label="Planes"
+            title="Elige el plan que impulsa tu negocio"
+          >
+            <p className="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              Hosting incluido.{" "}
+              <span className="font-medium text-signal-deep">
+                Diseño profesional.
+              </span>{" "}
+              Te orientamos al plan correcto.
+            </p>
+          </SectionHeader>
         </Reveal>
 
         <Reveal delay={0.1} className="mt-8">

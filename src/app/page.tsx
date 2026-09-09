@@ -2,8 +2,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Benefits } from "@/components/sections/Benefits";
-import { Services } from "@/components/sections/Services";
 import { Approach } from "@/components/sections/Approach";
+import { Services } from "@/components/sections/Services";
 import { Plans } from "@/components/sections/Plans";
 import { Contact } from "@/components/sections/Contact";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -16,8 +16,8 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <Benefits />
-        <Services />
         <Approach />
+        <Services />
         <Plans />
         <Contact />
       </main>
