@@ -20,16 +20,10 @@ export function ScrollToHero({
     e.preventDefault();
     onNavigate?.();
 
-    const target = document.getElementById("inicio");
     window.history.pushState(null, "", "/");
 
     if (lenis) {
-      lenis.scrollTo(target ?? 0, { offset: 0, duration: 1.2 });
-      return;
-    }
-
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      lenis.scrollTo(0, { offset: 0, duration: 1.2 });
       return;
     }
 

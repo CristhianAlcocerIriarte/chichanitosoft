@@ -9,9 +9,11 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { useRef, type MouseEvent } from "react";
 import { HeroCanvas } from "@/components/ui/HeroCanvas";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -24,6 +26,7 @@ const titleLines = [
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const lenis = useLenis();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -129,6 +132,10 @@ export function Hero() {
           >
             <a
               href="#contacto"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#contacto", lenis);
+              }}
               className="group relative inline-flex items-center justify-center overflow-hidden bg-signal px-5 py-3 text-sm font-semibold text-white animate-cta-glow sm:px-6 sm:py-3.5"
             >
               <span
@@ -147,6 +154,10 @@ export function Hero() {
             </a>
             <MagneticButton
               href="#planes"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#planes", lenis);
+              }}
               className="group inline-flex items-center justify-center gap-2 border border-signal/30 bg-white/50 px-5 py-3 text-sm font-semibold text-ink backdrop-blur-sm transition-colors duration-300 hover:border-signal hover:bg-signal/10 sm:px-6 sm:py-3.5"
             >
               Ver planes

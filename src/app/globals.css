@@ -41,12 +41,13 @@ html {
   scroll-behavior: auto;
 }
 
-section[id] {
+/* Match fixed navbar height so anchors land on each section’s top edge */
+section[id]:not(#inicio) {
   scroll-margin-top: 4rem;
 }
 
 @media (min-width: 640px) {
-  section[id] {
+  section[id]:not(#inicio) {
     scroll-margin-top: 4.5rem;
   }
 }

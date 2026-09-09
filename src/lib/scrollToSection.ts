@@ -1,13 +1,5 @@
 import type Lenis from "lenis";
 
-export function getNavOffset() {
-  if (typeof window === "undefined") return -64;
-
-  const header = document.querySelector("header");
-  const height = header?.getBoundingClientRect().height ?? 64;
-  return -Math.round(height);
-}
-
 export function scrollToSection(
   href: string,
   lenis?: Lenis | null,
@@ -19,18 +11,16 @@ export function scrollToSection(
   const target = document.getElementById(id);
   if (!target) return;
 
-  const offset = getNavOffset();
   const duration = options?.duration ?? 1.15;
 
   // Ensure Lenis can move after mobile menu unlocked body scroll
   lenis?.start?.();
 
   if (lenis) {
-    lenis.scrollTo(target, { offset, duration, immediate: false });
+    // Lenis already subtracts CSS scroll-margin-top — no extra nav offset
+    lenis.scrollTo(target, { offset: 0, duration, immediate: false });
   } else {
-    const top =
-      target.getBoundingClientRect().top + window.scrollY + offset;
-    window.scrollTo({ top, behavior: "smooth" });
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   window.history.pushState(null, "", href);
