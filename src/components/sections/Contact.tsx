@@ -7,7 +7,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { CONTACT_LIMITS, sanitizeContactInput } from "@/lib/sanitize";
 
-const CONTACT_EMAIL = "chichanitosoft@gmail.com";
+const CONTACT_EMAIL = "contacto@softwarecochabamba.com";
 
 const fieldClass =
   "mt-2 w-full border-b border-ink/20 bg-transparent py-2.5 text-ink outline-none transition-all duration-300 focus:border-signal focus:pl-1";
@@ -103,8 +103,8 @@ export function Contact() {
           },
           body: JSON.stringify({
             access_key: web3Key,
-            subject: `Proyecto ChichanitoSoft: ${payload.name}`,
-            from_name: "ChichanitoSoft Web",
+            subject: `Proyecto SoftwareCochabamba: ${payload.name}`,
+            from_name: "SoftwareCochabamba Web",
             name: payload.name,
             email: payload.email,
             phone: payload.phone,
@@ -136,7 +136,7 @@ export function Contact() {
               email: payload.email,
               phone: payload.phone,
               message: payload.message,
-              _subject: `Proyecto ChichanitoSoft: ${payload.name}`,
+              _subject: `Proyecto SoftwareCochabamba: ${payload.name}`,
               _template: "table",
               _replyto: payload.email,
             }),
@@ -159,7 +159,7 @@ export function Contact() {
 
           if (needsActivation) {
             throw new Error(
-              "Activa el formulario: revisa el Gmail de chichanitosoft@gmail.com (también spam) y haz clic en Activate Form.",
+              "Activa el formulario: revisa el correo de contacto@softwarecochabamba.com (también spam) y haz clic en Activate Form.",
             );
           }
 

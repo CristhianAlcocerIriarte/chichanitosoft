@@ -17,7 +17,7 @@ async function fetchFromBcbOfficial(): Promise<ExchangePayload | null> {
     {
       headers: {
         Accept: "text/html",
-        "User-Agent": "ChichanitoSoft/1.0 (+https://chichanitosoft.vercel.app)",
+        "User-Agent": "SoftwareCochabamba/1.0 (+https://chichanitosoft.vercel.app)",
       },
       next: { revalidate: 3600 },
     },

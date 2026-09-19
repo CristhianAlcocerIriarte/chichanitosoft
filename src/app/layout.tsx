@@ -22,7 +22,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ChichanitoSoft | Software a medida",
+  title: "SoftwareCochabamba | Software a medida",
   description:
     "Desarrollo de software a medida con interfaces memorables, backends sólidos y experiencia digital de alto impacto.",
   keywords: [
@@ -30,7 +30,8 @@ export const metadata: Metadata = {
     "desarrollo web",
     "Next.js",
     "frontend",
-    "ChichanitoSoft",
+    "SoftwareCochabamba",
+    "Cochabamba",
   ],
 };
 

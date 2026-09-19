@@ -16,7 +16,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-12 sm:flex-row sm:items-end sm:justify-between sm:px-8">
           <div>
             <ScrollToHero className="font-display text-2xl font-bold tracking-tight text-paper transition-opacity hover:opacity-90">
-              Chichanito<span className="text-signal">Soft</span>
+              Software<span className="text-signal">Cochabamba</span>
             </ScrollToHero>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-paper/60">
               Desarrollo de software a medida con frontend de alto impacto e
@@ -26,13 +26,13 @@ export function Footer() {
 
           <div className="flex flex-col gap-2 text-sm text-paper/55 sm:items-end">
             <a
-              href="mailto:chichanitosoft@gmail.com"
+              href="mailto:contacto@softwarecochabamba.com"
               className="transition-colors duration-300 hover:text-signal"
             >
-              chichanitosoft@gmail.com
+              contacto@softwarecochabamba.com
             </a>
             <p className="font-mono text-xs tracking-wide text-signal/70">
-              © {year} ChichanitoSoft. Todos los derechos reservados.
+              © {year} SoftwareCochabamba. Todos los derechos reservados.
             </p>
           </div>
         </div>

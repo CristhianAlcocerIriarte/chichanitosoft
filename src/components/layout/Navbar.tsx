@@ -85,7 +85,7 @@ export function Navbar() {
             onNavigate={closeMenu}
             className="font-display text-[1.05rem] font-bold tracking-tight text-ink sm:text-lg"
           >
-            Chichanito<span className="text-signal">Soft</span>
+            Software<span className="text-signal">Cochabamba</span>
           </ScrollToHero>
         </motion.div>
 
